@@ -5,7 +5,7 @@ namespace App\Http\Requests\Employee;
 use App\DataTransferObjects\EmployeeDto;
 use Illuminate\Foundation\Http\FormRequest;
 
-class EmployeeFormRequest extends FormRequest
+abstract class EmployeeFormRequest extends FormRequest
 {
     public function toDto(): EmployeeDto
     {

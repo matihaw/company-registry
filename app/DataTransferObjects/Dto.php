@@ -5,7 +5,7 @@ namespace App\DataTransferObjects;
 abstract readonly class Dto
 {
     /**
-     * @return array<string, string>
+     * @return array<string, mixed>
      */
     public function toArray(): array
     {
