@@ -3,9 +3,14 @@
 namespace App\Service;
 
 use App\DataTransferObjects\EmployeeDto;
+use App\Filters\Employee\Email;
+use App\Filters\Employee\FirstName;
+use App\Filters\Employee\LastName;
+use App\Filters\Employee\Phone;
 use App\Models\Company;
 use App\Models\Employee;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pipeline\Pipeline;
 
 final readonly class EmployeeService
 {
@@ -14,7 +19,16 @@ final readonly class EmployeeService
      */
     public function getCompanyEmployees(Company $company): Collection
     {
-        return $company->employees()->get();
+        return app(Pipeline::class)
+            ->send($company->employees())
+            ->through([
+                FirstName::class,
+                LastName::class,
+                Email::class,
+                Phone::class,
+            ])
+            ->thenReturn()
+            ->get();
     }
 
     public function store(Company $company, EmployeeDto $data): void

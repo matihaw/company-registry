@@ -3,8 +3,16 @@
 namespace App\Service;
 
 use App\DataTransferObjects\CompanyDto;
+use App\Filters\Company\Address\City;
+use App\Filters\Company\Address\Country;
+use App\Filters\Company\Address\Street;
+use App\Filters\Company\Address\Zip;
+use App\Filters\Company\Name;
+use App\Filters\Company\Nip;
+use App\Filters\TextFilter;
 use App\Models\Company;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Pipeline\Pipeline;
 
 final readonly class CompanyService
 {
@@ -13,7 +21,18 @@ final readonly class CompanyService
      */
     public function getPaginated(int $perPage): Paginator
     {
-        return Company::with('address')->simplePaginate($perPage);
+        return app(Pipeline::class)
+            ->send(Company::query())
+            ->through([
+                Name::class,
+                Nip::class,
+                City::class,
+                Street::class,
+                Zip::class,
+                Country::class,
+            ])
+            ->thenReturn()
+            ->simplePaginate($perPage);
     }
 
     public function store(CompanyDto $data): Company
