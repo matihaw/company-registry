@@ -52,17 +52,10 @@ All API endpoints except authentication endpoints require Bearer token authentic
 
 - **POST `/api/register`**
     - Register a new user
-    - Body: `{
-    "name": "admin",
-    "email": "admin@admin.com",
-    "password": "pA5sword!",
-    "password_confirmation": "pA5sword!"
-}`
     - Returns: User object
 
 - **POST `/api/login`**
     - Login user
-    - Body: ```{ "email": string, "password": string }```
     - Returns: User object and authentication token
 
 - **POST `/api/logout`**
@@ -73,6 +66,13 @@ All API endpoints except authentication endpoints require Bearer token authentic
 
 - **GET `/api/companies`**
     - Get paginated list of companies
+    - Allowed query filters:
+      - name: string,
+      - nip: number,
+      - city: string,
+      - country: string,
+      - street: string,
+      - zip: string
     - Returns: Paginated companies list (15 per page)
 
 - **GET `/api/companies/{company}`**
@@ -97,6 +97,11 @@ All API endpoints except authentication endpoints require Bearer token authentic
 
 - **GET `/api/companies/{company}/employees`**
     - Get all employees for a specific company
+    - Allowed query filters:
+      - first_name: string,
+      - last_name: number,
+      - email: string,
+      - phone: string,
     - Returns: List of employees
 
 - **POST `/api/companies/{company}/employees`**
