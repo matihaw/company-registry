@@ -33,6 +33,8 @@ final readonly class EmployeeController
 
     public function show(Employee $employee): JsonResponse
     {
+        $employee->load('company');
+
         return response()->json($employee);
     }
 
